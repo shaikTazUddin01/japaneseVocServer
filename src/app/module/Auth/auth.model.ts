@@ -12,7 +12,6 @@ const authSchema = new Schema<IAuth>({
 
 authSchema.pre("save", async function (next) {
   const user = this;
-
   user.password = await bcrypt.hash(user?.password, Number(config.saltRounds));
   next();
 });
@@ -24,4 +23,4 @@ authSchema.set("toJSON", {
   },
 });
 
-export const User = model<IAuth>("Auth", authSchema);
+export const Auth = model<IAuth>("Auth", authSchema);

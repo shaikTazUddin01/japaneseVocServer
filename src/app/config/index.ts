@@ -5,5 +5,8 @@ dotenv.config()
 export const config={
     port:process.env.PORT,
     db_url:process.env.DB_URL,
-    saltRounds:process.env.SALTROUND
+    saltRounds:process.env.SALTROUND,
+    cloudinary_name:process.env.Cloudinary_Name,
+    cloudinary_api:process.env.Cloudinary_Api,
+    cloudinary_secret:process.env.Cloudinary_Secret
 }

@@ -8,5 +8,7 @@ export const config={
     saltRounds:process.env.SALTROUND,
     cloudinary_name:process.env.Cloudinary_Name,
     cloudinary_api:process.env.Cloudinary_Api,
-    cloudinary_secret:process.env.Cloudinary_Secret
+    cloudinary_secret:process.env.Cloudinary_Secret,
+    assessToken:process.env.ACCESS_Token,
+    assessTokenExpireIn:process.env.ACCESS_EXPIRESIN
 }

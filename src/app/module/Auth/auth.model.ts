@@ -23,4 +23,4 @@ authSchema.set("toJSON", {
   },
 });
 
-export const Auth = model<IAuth>("Auth", authSchema);
+export const Auth = model<IAuth>("User", authSchema);

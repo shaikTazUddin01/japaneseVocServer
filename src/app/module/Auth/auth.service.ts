@@ -2,10 +2,11 @@ import { AppError } from "../../error/AppError";
 import { IAuth } from "./auth.interface";
 import { Auth } from "./auth.model";
 import { StatusCodes } from "http-status-codes";
-
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { config } from "../../config";
 // create new user
 const createUserInFoDB = async (data: IAuth, profileImage: string) => {
-  
   data.image = profileImage;
   const isUserExists = await Auth.findOne({ email: data?.email });
   if (isUserExists) {
@@ -14,14 +15,55 @@ const createUserInFoDB = async (data: IAuth, profileImage: string) => {
       "This user already exists.try with another E-mail"
     );
   }
-  // // create user
-  data.role = "USER";
 
- 
+  data.role = "USER";
   const res = await Auth.create(data);
   return res;
 };
 
+// get user
+const getUser = async () => {
+  const res = await Auth.find();
+  return res;
+};
+
+// get user
+const loginUser = async (data: Partial<IAuth>) => {
+  const isUserExists = await Auth.findOne({ email: data?.email });
+  if (!isUserExists) {
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      "You don't have any account,Registration now"
+    );
+  }
+
+  const isPassMatch = await bcrypt.compare(
+    data?.password as string,
+    isUserExists?.password
+  );
+
+  
+
+  if (!isPassMatch) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Wrong password");
+  }
+
+
+  const userInfo={
+    name:isUserExists?.name,
+    email:isUserExists?.email,
+    role:isUserExists?.role,
+    image:isUserExists?.image
+  }
+
+  const token = jwt.sign(userInfo,config.assessToken as string,{expiresIn:config?.assessTokenExpireIn})
+
+
+  return token;
+};
+
 export const authService = {
   createUserInFoDB,
+  getUser,
+  loginUser,
 };

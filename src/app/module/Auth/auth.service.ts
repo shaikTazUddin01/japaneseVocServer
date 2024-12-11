@@ -46,6 +46,7 @@ const loginUser = async (data: Partial<IAuth>) => {
     throw new AppError(StatusCodes.NOT_FOUND, "Wrong password");
   }
   const userInfo = {
+    userId:isUserExists?._id,
     name: isUserExists?.name,
     email: isUserExists?.email,
     role: isUserExists?.role,

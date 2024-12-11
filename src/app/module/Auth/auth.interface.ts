@@ -15,3 +15,8 @@ export interface IDecodedUser {
   iat: number;
   exp: number;
 }
+
+export type TUser_Role={
+ USER:"USER",
+ ADMIN:"ADMIN"
+}

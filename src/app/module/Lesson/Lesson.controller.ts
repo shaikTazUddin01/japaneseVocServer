@@ -32,12 +32,16 @@ const deleteLesson = catchAsync(async (req, res) => {
   });
 });
 const updateLesson = catchAsync(async (req, res) => {
-  const result = await lessonService.updateLesson(req.body);
+
+
+  const {id}=req.params
+
+  const result = await lessonService.updateLesson(id,req.body);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,
     message: "update success",
-    data: result,
+    data: null,
   });
 });
 

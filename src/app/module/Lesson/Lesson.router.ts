@@ -11,7 +11,7 @@ const router = Router()
 router.post('/createLesson',auth(TUser_Role?.ADMIN),lessonController.createLesson)
 router.get('/',lessonController.getLesson)
 router.delete('/delete/:id',lessonController.deleteLesson)
-router.patch('/update',lessonController.updateLesson)
+router.patch('/updatelesson/:id',lessonController.updateLesson)
 
 
 export const lessonRoter = router

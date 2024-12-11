@@ -61,6 +61,17 @@ const deleteVoc = catchAsync(async (req, res) => {
     data: result,
   });
 });
+// update vocabulary
+const updateVoc = catchAsync(async (req, res) => {
+  // console.log(req.body);
+  const result = await lessonService.updateVoc(req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Vocabulary updated",
+    data: result,
+  });
+});
 
 
 export const lessonController={
@@ -69,5 +80,6 @@ export const lessonController={
     deleteLesson,
     updateLesson,
     addVoc,
-    deleteVoc
+    deleteVoc,
+    updateVoc
 }

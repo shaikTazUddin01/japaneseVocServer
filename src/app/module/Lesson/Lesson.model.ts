@@ -13,7 +13,7 @@ const lessonSchema = new Schema<ILesson>({
   lessonName: { type: String, required: true, unique: true },
   lessonNumber: { type: Number, required: true, unique: true },
   authId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
-  vocabulary: { type: [vocabularySchema], default: [], ref: "User" },
+  vocabulary: { type: [vocabularySchema], ref: "User" },
 });
 
 export const Lesson = model<ILesson>("lesson", lessonSchema);

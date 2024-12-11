@@ -5,7 +5,7 @@ const vocabularySchema = new Schema<IVocabulary>({
   word: { type: String, required: true },
   pronunciation: { type: String, required: true },
   whenToSay: { type: String, required: true },
-  adminId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+  adminEmail: { type: String, required: true },
 });
 
 const lessonSchema = new Schema<ILesson>({

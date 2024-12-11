@@ -31,17 +31,25 @@ const deleteLesson = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const updateLesson = catchAsync(async (req, res) => {
-
-
   const {id}=req.params
-
   const result = await lessonService.updateLesson(id,req.body);
   sendResponse(res, {
     success: true,
     statusCode: StatusCodes.OK,
     message: "update success",
-    data: null,
+    data: result,
+  });
+});
+
+const addVoc = catchAsync(async (req, res) => {
+  const result = await lessonService.addVoc(req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Vocabulary added success",
+    data: result,
   });
 });
 
@@ -50,5 +58,6 @@ export const lessonController={
     createLesson,
     getLesson,
     deleteLesson,
-    updateLesson
+    updateLesson,
+    addVoc
 }

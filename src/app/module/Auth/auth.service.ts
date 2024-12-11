@@ -42,28 +42,45 @@ const loginUser = async (data: Partial<IAuth>) => {
     isUserExists?.password
   );
 
-  
-
   if (!isPassMatch) {
     throw new AppError(StatusCodes.NOT_FOUND, "Wrong password");
   }
-
-
-  const userInfo={
-    name:isUserExists?.name,
-    email:isUserExists?.email,
-    role:isUserExists?.role,
-    image:isUserExists?.image
+  const userInfo = {
+    name: isUserExists?.name,
+    email: isUserExists?.email,
+    role: isUserExists?.role,
+    image: isUserExists?.image,
+  };
+  const token = jwt.sign(userInfo, config.assessToken as string, {
+    expiresIn: config?.assessTokenExpireIn,
+  });
+  return token;
+};
+// Update user
+const updateUser = async (data: Partial<IAuth>) => {
+  // console.log("--->", data?.id);
+  const isUserExists = await Auth.findOne({ _id: data?.id });
+  if (!isUserExists) {
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      "You don't have any account,Registration now"
+    );
   }
 
-  const token = jwt.sign(userInfo,config.assessToken as string,{expiresIn:config?.assessTokenExpireIn})
+  const res = await Auth.findByIdAndUpdate(
+    data?.id,
+    { role: data?.role },
+    { new: true }
+  );
 
+  // console.log(res);
 
-  return token;
+  return res;
 };
 
 export const authService = {
   createUserInFoDB,
   getUser,
   loginUser,
+  updateUser,
 };

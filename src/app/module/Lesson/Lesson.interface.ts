@@ -1,9 +1,16 @@
 import { Types } from "mongoose";
 
+export interface IVocabulary {
+  word: string;
+  pronunciation: string;
+  whenToSay: string;
+  adminId: Types.ObjectId;
+}
+
 export interface ILesson {
-    
-    lessonName: string;
-    lessonNumber: number;
-    authId: Types.ObjectId;
-  }
-  
+  id?: string;
+  lessonName: string;
+  lessonNumber: number;
+  vocabulary: [IVocabulary];
+  authId: Types.ObjectId;
+}

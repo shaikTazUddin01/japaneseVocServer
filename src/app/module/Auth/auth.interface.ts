@@ -16,7 +16,7 @@ export interface IDecodedUser {
   exp: number;
 }
 
-export type TUser_Role={
- USER:"USER",
- ADMIN:"ADMIN"
+export enum TUser_Role {
+  USER = "USER",
+  ADMIN = "ADMIN",
 }

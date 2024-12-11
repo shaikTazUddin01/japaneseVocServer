@@ -4,6 +4,7 @@ export interface IVocabulary {
   lessonNo?: string;
   word: string;
   pronunciation: string;
+  meaning:string;
   whenToSay: string;
   adminEmail: string;
 }

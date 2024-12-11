@@ -6,6 +6,7 @@ const vocabularySchema = new Schema<IVocabulary>({
   pronunciation: { type: String, required: true },
   whenToSay: { type: String, required: true },
   adminEmail: { type: String, required: true },
+  meaning: { type: String, required: true },
 });
 
 const lessonSchema = new Schema<ILesson>({

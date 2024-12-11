@@ -24,8 +24,15 @@ const vocabulary={
     pronunciation: data?.pronunciation,
     whenToSay: data?.whenToSay,
     adminEmail: data?.adminEmail,
+    meaning:data?.meaning
 }
-  const res = await Lesson.updateOne({lessonNumber:data?.lessonNo}, {vocabulary:vocabulary}, { new: true });
+// console.log(data,"-->",vocabulary);
+  const res = await Lesson.updateOne({lessonNumber:data?.lessonNo}, {$addToSet:{vocabulary:vocabulary}}, { new: true });
+  return res;
+};
+// delete vocabulary
+const deleteVoc = async ( data: any) => {
+  const res = await Lesson.updateOne({_id:data?.lessonId}, {$pull:{vocabulary:{_id:data?.vocabularyId}}}, { new: true });
   return res;
 };
 
@@ -34,5 +41,6 @@ export const lessonService = {
   getLesson,
   deleteLesson,
   updateLesson,
-  addVoc
+  addVoc,
+  deleteVoc
 };

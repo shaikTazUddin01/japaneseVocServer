@@ -13,6 +13,7 @@ router.get('/',lessonController.getLesson)
 router.delete('/delete/:id',auth(TUser_Role?.ADMIN),lessonController.deleteLesson)
 router.patch('/updatelesson/:id',auth(TUser_Role?.ADMIN),lessonController.updateLesson)
 router.patch('/addeeVoca',auth(TUser_Role?.ADMIN),lessonController.addVoc)
+router.delete('/deleteVoca',auth(TUser_Role?.ADMIN),lessonController.deleteVoc)
 
 
 export const lessonRoter = router

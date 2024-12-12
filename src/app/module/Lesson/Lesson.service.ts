@@ -10,6 +10,10 @@ const getLesson = async () => {
   const res = await Lesson.find().populate("authId");
   return res;
 };
+const getSpecificLesson = async (id:string) => {
+  const res = await Lesson.find({_id:id}).populate("authId");
+  return res;
+};
 const deleteLesson = async (id: string) => {
   const res = await Lesson.findByIdAndDelete(id);
   return res;
@@ -60,13 +64,12 @@ const updateVoc = async (data: any) => {
     },
     { new: true }
   );
-  // const res = await Lesson.find({ _id: lessonId})
-//   console.log(res);
   return res;
 };
 
 export const lessonService = {
   createLesson,
+  getSpecificLesson,
   getLesson,
   deleteLesson,
   updateLesson,

@@ -21,6 +21,16 @@ const getLesson = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getSpecipicLesson = catchAsync(async (req, res) => {
+  const {id}=req.params
+  const result = await lessonService.getSpecificLesson(id);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "retrieve success",
+    data: result,
+  });
+});
 const deleteLesson = catchAsync(async (req, res) => {
     const id=req?.params?.id
   const result = await lessonService.deleteLesson(id);
@@ -77,6 +87,7 @@ const updateVoc = catchAsync(async (req, res) => {
 export const lessonController={
     createLesson,
     getLesson,
+    getSpecipicLesson,
     deleteLesson,
     updateLesson,
     addVoc,

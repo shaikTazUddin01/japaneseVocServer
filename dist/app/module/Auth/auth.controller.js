@@ -41,7 +41,10 @@ const getUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0
 }));
 // login user
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     const result = yield auth_service_1.authService.loginUser(req.body);
+    // console.log(result);
+    res.cookie("token", result);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -49,8 +52,19 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
         data: result,
     });
 }));
+// update user
+const UpdateUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield auth_service_1.authService.updateUser(req.body);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        message: "update success",
+        data: result,
+    });
+}));
 exports.authController = {
     createUser,
     getUser,
-    loginUser
+    loginUser,
+    UpdateUser
 };

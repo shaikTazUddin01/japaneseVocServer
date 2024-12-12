@@ -8,4 +8,5 @@ const router = (0, express_1.Router)();
 router.post('/createUser', multer_config_1.multerUpload.single('image'), auth_controller_1.authController.createUser);
 router.get('/getUser', auth_controller_1.authController.getUser);
 router.post('/login', auth_controller_1.authController.loginUser);
+router.patch('/updateUser', auth_controller_1.authController.UpdateUser);
 exports.authRouter = router;

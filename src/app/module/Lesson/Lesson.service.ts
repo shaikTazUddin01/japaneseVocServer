@@ -11,7 +11,7 @@ const getLesson = async () => {
   return res;
 };
 const getSpecificLesson = async (id:string) => {
-  const res = await Lesson.find({_id:id}).populate("authId");
+  const res = await Lesson.findOne({_id:id}).populate("authId");
   return res;
 };
 const deleteLesson = async (id: string) => {

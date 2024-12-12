@@ -35,6 +35,16 @@ const getLesson = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
         data: result,
     });
 }));
+const getSpecipicLesson = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield Lesson_service_1.lessonService.getSpecificLesson(id);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        message: "retrieve success",
+        data: result,
+    });
+}));
 const deleteLesson = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.id;
@@ -88,6 +98,7 @@ const updateVoc = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
 exports.lessonController = {
     createLesson,
     getLesson,
+    getSpecipicLesson,
     deleteLesson,
     updateLesson,
     addVoc,

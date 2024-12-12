@@ -8,12 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lessonService = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
 const Lesson_model_1 = require("./Lesson.model");
 const createLesson = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const res = yield Lesson_model_1.Lesson.create(data);
@@ -21,6 +17,10 @@ const createLesson = (data) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getLesson = () => __awaiter(void 0, void 0, void 0, function* () {
     const res = yield Lesson_model_1.Lesson.find().populate("authId");
+    return res;
+});
+const getSpecificLesson = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield Lesson_model_1.Lesson.findOne({ _id: id }).populate("authId");
     return res;
 });
 const deleteLesson = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -49,23 +49,80 @@ const deleteVoc = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const res = yield Lesson_model_1.Lesson.updateOne({ _id: data === null || data === void 0 ? void 0 : data.lessonId }, { $pull: { vocabulary: { _id: data === null || data === void 0 ? void 0 : data.vocabularyId } } }, { new: true });
     return res;
 });
-// delete vocabulary
+// update vocabulary
+// const updateVoc = async (data: any) => {
+//   const lessonId = new mongoose.Types.ObjectId(data?.lessonId);
+//   const vocId = new mongoose.Types.ObjectId(data?.vocId);
+//   const updateData = data?.data;
+//   //   console.log(lessonId,vocId,updateData);
+// // console.log("-->",data);
+// // data-->
+// //  lessonId: '6759e3cc50dcb60fb6c24351',
+// // vocId: '675b0f523bffdec7eb89ef8d',
+// // data: {
+// //   word: 'こんにちは',
+// //   pronunciation: 'Konnichiwas',
+// //   meaning: 'Hello',
+// //   whenToSay: 'Used as a daytime greeting',
+// //   LessonNo: '2'
+// // }
+// // }
+// if (data?.data?.LessonNo) {
+// const find =await Lesson.findOne({_id:data?.lesson ,vocabulary._id:vocId})
+//   // const res = await Lesson.updateOne(
+//   //   { _id: data?.lessonId },
+//   //   { $pull: { vocabulary: { _id: data?.vocId } } },
+//   //   { new: true }
+//   // );
+//   // if (res) {
+//   //   const res = await Lesson.updateOne(
+//   //     { lessonNumber: data?.lessonNo },
+//   //     { $addToSet: { vocabulary: vocabulary } },
+//   //     { new: true }
+//   //   );
+//   // }
+// }
+//   const res = await Lesson.updateOne(
+//     { _id: lessonId, "vocabulary._id": vocId },
+//     {
+//       $set: {
+//         "vocabulary.$": updateData,
+//       },
+//     },
+//     { new: true }
+//   );
+//   return res;
+// };
 const updateVoc = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    const lessonId = new mongoose_1.default.Types.ObjectId(data === null || data === void 0 ? void 0 : data.lessonId);
-    const vocId = new mongoose_1.default.Types.ObjectId(data === null || data === void 0 ? void 0 : data.vocId);
+    var _a;
+    const lessonId = data === null || data === void 0 ? void 0 : data.lessonId;
+    const vocId = data === null || data === void 0 ? void 0 : data.vocId;
     const updateData = data === null || data === void 0 ? void 0 : data.data;
-    //   console.log(lessonId,vocId,updateData);
+    if ((_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.LessonNo) {
+        // Check if LessonNo is different
+        const currentLesson = yield Lesson_model_1.Lesson.findOne({
+            _id: lessonId,
+            "vocabulary._id": vocId,
+        });
+        if (currentLesson && currentLesson.lessonNumber !== data.data.LessonNo) {
+            // Remove vocabulary from the current lesson
+            yield Lesson_model_1.Lesson.updateOne({ _id: lessonId }, { $pull: { vocabulary: { _id: vocId } } });
+            // Add vocabulary to the new lesson
+            yield Lesson_model_1.Lesson.updateOne({ lessonNumber: data.data.LessonNo }, { $addToSet: { vocabulary: updateData } });
+            return { message: "Vocabulary moved to a new lesson." };
+        }
+    }
+    // Update vocabulary in the same lesson
     const res = yield Lesson_model_1.Lesson.updateOne({ _id: lessonId, "vocabulary._id": vocId }, {
         $set: {
             "vocabulary.$": updateData,
         },
     }, { new: true });
-    // const res = await Lesson.find({ _id: lessonId})
-    //   console.log(res);
     return res;
 });
 exports.lessonService = {
     createLesson,
+    getSpecificLesson,
     getLesson,
     deleteLesson,
     updateLesson,

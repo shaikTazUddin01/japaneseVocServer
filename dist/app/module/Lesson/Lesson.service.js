@@ -11,7 +11,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lessonService = void 0;
 const Lesson_model_1 = require("./Lesson.model");
+const AppError_1 = require("../../error/AppError");
+const http_status_codes_1 = require("http-status-codes");
 const createLesson = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    const isLessonNo = yield Lesson_model_1.Lesson.findOne({ lessonNumber: data === null || data === void 0 ? void 0 : data.lessonNumber });
+    // check is lesson no is already exists
+    if (isLessonNo) {
+        throw new AppError_1.AppError(http_status_codes_1.StatusCodes.BAD_REQUEST, "Already used the some lesson no. Please try to with another Lesson Number");
+    }
+    const isExistslessonName = yield Lesson_model_1.Lesson.findOne({ lessonName: data === null || data === void 0 ? void 0 : data.lessonName });
+    // check is lesson name is already exists
+    if (isExistslessonName) {
+        throw new AppError_1.AppError(http_status_codes_1.StatusCodes.BAD_REQUEST, "Already used the some lesson Name. Please try with to another Lesson Name");
+    }
     const res = yield Lesson_model_1.Lesson.create(data);
     return res;
 });
@@ -42,6 +54,7 @@ const addVoc = (data) => __awaiter(void 0, void 0, void 0, function* () {
     };
     // console.log(data,"-->",vocabulary);
     const res = yield Lesson_model_1.Lesson.updateOne({ lessonNumber: data === null || data === void 0 ? void 0 : data.lessonNo }, { $addToSet: { vocabulary: vocabulary } }, { new: true });
+    // console.log(res);
     return res;
 });
 // delete vocabulary

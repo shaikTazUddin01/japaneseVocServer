@@ -1,8 +1,21 @@
 import mongoose from "mongoose";
 import { ILesson, IVocabulary } from "./Lesson.interface";
 import { Lesson } from "./Lesson.model";
+import { AppError } from "../../error/AppError";
+import { StatusCodes } from "http-status-codes";
 
 const createLesson = async (data: ILesson) => {
+
+  const isLessonNo=await Lesson.findOne({lessonNumber:data?.lessonNumber})
+// check is lesson no is already exists
+  if (isLessonNo) {
+    throw new AppError(StatusCodes.BAD_REQUEST,"Already used the some lesson no. Please try to with another Lesson Number")
+  }
+  const isExistslessonName=await Lesson.findOne({lessonName:data?.lessonName})
+// check is lesson name is already exists
+  if (isExistslessonName) {
+    throw new AppError(StatusCodes.BAD_REQUEST,"Already used the some lesson Name. Please try with to another Lesson Name")
+  }
   const res = await Lesson.create(data);
   return res;
 };
@@ -37,6 +50,7 @@ const addVoc = async (data: IVocabulary) => {
     { $addToSet: { vocabulary: vocabulary } },
     { new: true }
   );
+  // console.log(res);
   return res;
 };
 // delete vocabulary
